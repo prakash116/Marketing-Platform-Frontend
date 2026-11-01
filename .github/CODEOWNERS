@@ -1,0 +1,6 @@
+# Replace @your-org/frontend-team with the real GitHub team before enabling
+# "Require review from Code Owners" in branch protection.
+*                       @your-org/frontend-team
+
+/.github/               @your-org/frontend-team
+/src/config/            @your-org/frontend-team
