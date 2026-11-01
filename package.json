@@ -4,8 +4,8 @@
   "private": true,
   "packageManager": "npm@11.20.0",
   "engines": {
-    "node": ">=26",
-    "npm": ">=11"
+    "node": ">=22.12",
+    "npm": ">=10"
   },
   "scripts": {
     "dev": "next dev",
