@@ -6,7 +6,7 @@ Standalone Next.js 16 frontend. The backend is a separate repository and is reac
 
 ```bash
 git init -b main          # only when cloning without .git (husky needs it)
-nvm use                   # Node 22 from .nvmrc (npm 10 ships with it)
+nvm use                   # Node 26 from .nvmrc (npm 11 ships with it)
 npm install
 cp .env.example .env.local
 npm run dev               # http://localhost:3000
