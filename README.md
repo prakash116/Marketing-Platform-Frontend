@@ -168,3 +168,7 @@ marketing-platform-frontend/
 ├── playwright.config.ts
 └── vitest.config.mts
 ```
+
+#   M a r k e t i n g - P l a t f o r m - F r o n t e n d 
+ 
+ 
