@@ -14,11 +14,11 @@ import { cn } from "@/lib/utils";
 const headingVariants = cva("font-display text-foreground", {
   variants: {
     level: {
-      display: "text-[48px] leading-[56px] font-extrabold tracking-[-0.02em]",
-      h1: "text-[36px] leading-[44px] font-bold tracking-[-0.02em]",
-      h2: "text-[30px] leading-[38px] font-bold tracking-[-0.01em]",
-      h3: "text-[24px] leading-[32px] font-semibold tracking-[-0.01em]",
-      h4: "text-[18px] leading-[28px] font-semibold",
+      display: "text-[48px] leading-14 font-extrabold tracking-[-0.02em]",
+      h1: "text-[36px] leading-11 font-bold tracking-[-0.02em]",
+      h2: "text-[30px] leading-9.5 font-bold tracking-[-0.01em]",
+      h3: "text-[24px] leading-8 font-semibold tracking-[-0.01em]",
+      h4: "text-[18px] leading-7 font-semibold",
     },
   },
   defaultVariants: {
@@ -29,12 +29,12 @@ const headingVariants = cva("font-display text-foreground", {
 const textVariants = cva("font-sans", {
   variants: {
     variant: {
-      "body-lg": "text-[16px] leading-[26px]",
-      body: "text-[14px] leading-[22px]",
-      small: "text-[13px] leading-[20px]",
-      caption: "text-[12px] leading-[16px] font-medium",
-      overline: "text-[11px] leading-[16px] font-bold tracking-[0.08em] uppercase",
-      label: "text-[14px] leading-[20px] font-semibold",
+      "body-lg": "text-[16px] leading-6.5",
+      body: "text-[14px] leading-5.5",
+      small: "text-[13px] leading-5",
+      caption: "text-[12px] leading-4 font-medium",
+      overline: "text-[11px] leading-4 font-bold tracking-[0.08em] uppercase",
+      label: "text-[14px] leading-5 font-semibold",
     },
     tone: {
       default: "text-foreground",
@@ -106,7 +106,7 @@ export function Kpi({ className, ...props }: KpiProps) {
   return (
     <span
       className={cn(
-        "font-sans text-[32px] leading-[40px] font-bold text-foreground tabular-nums",
+        "font-sans text-[32px] leading-10 font-bold text-foreground tabular-nums",
         className,
       )}
       {...props}
@@ -126,7 +126,7 @@ export function Code({ className, ...props }: CodeProps) {
   return (
     <code
       className={cn(
-        "rounded-sm border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] leading-[20px] text-foreground",
+        "rounded-sm border border-border bg-muted px-1.5 py-0.5 font-mono text-[13px] leading-5 text-foreground",
         className,
       )}
       {...props}
