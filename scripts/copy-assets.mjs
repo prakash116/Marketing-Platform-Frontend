@@ -12,5 +12,9 @@ if (!existsSync(standalone)) {
   process.exit(1);
 }
 
-cpSync(join(root, "public"), join(standalone, "public"), { recursive: true });
+// public/ is empty in a fresh checkout (git does not track empty folders), so it is optional.
+const publicDir = join(root, "public");
+if (existsSync(publicDir)) {
+  cpSync(publicDir, join(standalone, "public"), { recursive: true });
+}
 cpSync(join(root, ".next", "static"), join(standalone, ".next", "static"), { recursive: true });
