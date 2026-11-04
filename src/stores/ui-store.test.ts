@@ -21,4 +21,15 @@ describe("useUiStore", () => {
     act(() => useUiStore.getState().setSidebarCollapsed(true));
     expect(useUiStore.getState().sidebarCollapsed).toBe(true);
   });
+
+  it("opens and closes the mobile nav without persisting it", () => {
+    act(() => useUiStore.getState().setMobileNavOpen(true));
+    expect(useUiStore.getState().mobileNavOpen).toBe(true);
+
+    const persisted = localStorage.getItem("mp-ui") ?? "";
+    expect(persisted).not.toContain("mobileNavOpen");
+
+    act(() => useUiStore.getState().setMobileNavOpen(false));
+    expect(useUiStore.getState().mobileNavOpen).toBe(false);
+  });
 });

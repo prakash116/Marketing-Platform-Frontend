@@ -29,7 +29,9 @@ export function ScrollStateHeader({ className, ...props }: ComponentPropsWithout
       data-scrolled={scrolled || undefined}
       data-transparent={transparent || undefined}
       className={cn(
-        "transition-[background-color,border-color] duration-200 ease-out-soft data-transparent:border-transparent data-transparent:bg-transparent",
+        "transition-[background-color,border-color] duration-200 ease-out-soft",
+        // Solid again while a nav menu is open, so the panel never floats over the hero.
+        "data-transparent:not-has-data-[state=open]:border-transparent data-transparent:not-has-data-[state=open]:bg-transparent",
         className,
       )}
       {...props}

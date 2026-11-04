@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("home page", () => {
+test.describe("design system page", () => {
   test("returns 200 with security headers", async ({ page }) => {
-    const response = await page.goto("/");
+    const response = await page.goto("/design-system");
     expect(response?.status()).toBe(200);
 
     const headers = response?.headers() ?? {};
@@ -13,7 +13,7 @@ test.describe("home page", () => {
   });
 
   test("shows the heading", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/design-system");
     await expect(page.getByRole("heading", { level: 1, name: "Marketing Platform" })).toBeVisible();
   });
 
@@ -24,7 +24,7 @@ test.describe("home page", () => {
     });
     page.on("pageerror", (error) => errors.push(error.message));
 
-    await page.goto("/");
+    await page.goto("/design-system");
     await expect(page.getByRole("heading", { level: 1, name: "Marketing Platform" })).toBeVisible();
 
     expect(errors).toEqual([]);
@@ -32,7 +32,7 @@ test.describe("home page", () => {
 
   test("dark mode toggle adds the dark class", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "light" });
-    await page.goto("/");
+    await page.goto("/design-system");
 
     const html = page.locator("html");
     await expect(html).not.toHaveClass(/\bdark\b/);

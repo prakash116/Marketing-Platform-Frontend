@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     // The site header is sticky and transparent here; pull the hero up underneath it.
-    <main className="-mt-16 flex-1 lg:-mt-[72px]">
+    <main className="-mt-16 flex-1 lg:-mt-18">
       <section className="px-4 pt-28 pb-14 text-center lg:pt-36 lg:pb-20">
         <div className="mx-auto flex max-w-3xl flex-col items-center">
           <span className="inline-flex items-center gap-2 rounded-full bg-primary-soft px-3 py-1 text-[12px] leading-5 font-semibold text-primary-soft-foreground">

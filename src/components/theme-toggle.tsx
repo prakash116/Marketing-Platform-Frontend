@@ -3,11 +3,14 @@
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, type ButtonProps } from "@/components/ui/button";
 
 const subscribeNoop = () => () => {};
 
-export function ThemeToggle() {
+export function ThemeToggle({
+  variant = "secondary",
+  className,
+}: Pick<ButtonProps, "variant" | "className">) {
   const { resolvedTheme, setTheme } = useTheme();
   // Theme is unknown during SSR; avoid a hydration mismatch on the icon.
   const mounted = useSyncExternalStore(
@@ -20,8 +23,9 @@ export function ThemeToggle() {
 
   return (
     <Button
-      variant="secondary"
+      variant={variant}
       size="icon"
+      className={className}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       aria-pressed={isDark}
       data-testid="theme-toggle"

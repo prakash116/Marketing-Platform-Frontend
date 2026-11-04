@@ -6,10 +6,10 @@ import { usePathname } from "next/navigation";
 import { Accordion } from "radix-ui";
 import { useState } from "react";
 import { Logo } from "@/components/brand/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { LanguageSwitch } from "./language-switch";
 import { authLinks, isActivePath, mainNav, whatsappChatUrl, type NavLinkItem } from "./nav-config";
 
 /** Full-screen navigation sheet for viewports below 1024px. */
@@ -93,7 +93,7 @@ export function MobileMenu() {
 
         <div className="shrink-0 space-y-3 border-t border-border px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
           <div className="flex items-center justify-between">
-            <LanguageSwitch />
+            <ThemeToggle variant="ghost" className="-ml-2 size-11 [&_svg]:size-5" />
             <a
               href={whatsappChatUrl}
               target="_blank"
