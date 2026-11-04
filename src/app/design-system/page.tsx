@@ -166,7 +166,7 @@ export default function DesignSystemPreviewPage() {
               <Button loading>Saving</Button>
               <Button disabled>Disabled</Button>
               <Button variant="secondary" asChild>
-                <Link href="/">As child (Link)</Link>
+                <Link href="/design-system">As child (Link)</Link>
               </Button>
             </div>
           </StaggerItem>
