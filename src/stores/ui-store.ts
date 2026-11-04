@@ -13,6 +13,9 @@ export interface UiState {
   sidebarCollapsed: boolean;
   toggleSidebar: () => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
+  /** Mobile app navigation drawer (below 1024px). Not persisted. */
+  mobileNavOpen: boolean;
+  setMobileNavOpen: (open: boolean) => void;
 }
 
 export const useUiStore = create<UiState>()(
@@ -28,6 +31,8 @@ export const useUiStore = create<UiState>()(
           ),
         setSidebarCollapsed: (collapsed) =>
           set({ sidebarCollapsed: collapsed }, false, "ui/setSidebarCollapsed"),
+        mobileNavOpen: false,
+        setMobileNavOpen: (open) => set({ mobileNavOpen: open }, false, "ui/setMobileNavOpen"),
       }),
       {
         name: "mp-ui",
