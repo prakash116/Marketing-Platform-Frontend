@@ -80,6 +80,38 @@ test.describe("sign-up", () => {
     ).toBeVisible();
     await expect(page.getByRole("link", { name: "Start setup" })).toBeVisible();
   });
+
+  test("account type picker switches to the creator form", async ({ page }) => {
+    await gotoHydrated(page, "/signup");
+    await requestCode(page, NEW_NUMBER, "Continue");
+    await page.getByLabel("Digit 1").fill(CODE);
+
+    // Business is the default type.
+    await expect(page.getByRole("radio", { name: "Business" })).toBeChecked();
+    await page.getByRole("radio", { name: "Creator" }).check({ force: true });
+    await expect(page.getByRole("heading", { name: "Tell us about you" })).toBeVisible();
+
+    await page.getByLabel("Your name").fill("Priya Sharma");
+    await page.getByLabel("Instagram handle").fill("@priyaeats");
+    await page.getByRole("checkbox", { name: "Food" }).check({ force: true });
+    await page.getByRole("checkbox", { name: "Travel" }).check({ force: true });
+    await page.getByRole("radio", { name: "10k – 50k" }).check({ force: true });
+    await page.getByLabel("City").fill("Jaipur");
+    await page.getByRole("button", { name: "Create my account" }).click();
+
+    await expect(page.getByText("Brands in Jaipur can now find @priyaeats.")).toBeVisible();
+    await expect(page.getByText("Next: finish your creator profile")).toBeVisible();
+  });
+
+  test("?as=agency preselects the agency form", async ({ page }) => {
+    await gotoHydrated(page, "/signup?as=agency");
+    await requestCode(page, NEW_NUMBER, "Continue");
+    await page.getByLabel("Digit 1").fill(CODE);
+
+    await expect(page.getByRole("radio", { name: "Agency" })).toBeChecked();
+    await expect(page.getByRole("heading", { name: "Tell us about your agency" })).toBeVisible();
+    await expect(page.getByText("How many businesses do you manage?")).toBeVisible();
+  });
 });
 
 test.describe("layout", () => {

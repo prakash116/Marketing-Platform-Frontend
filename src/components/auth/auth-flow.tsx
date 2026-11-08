@@ -7,20 +7,26 @@ import { useState } from "react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import type { BusinessDetails } from "@/mocks/auth";
+import { isAccountType, type AccountType, type SignupDetails } from "@/mocks/auth";
 import { TermsNote } from "./auth-parts";
 import type { AuthVariant } from "./brand-panel";
-import { BusinessStep } from "./business-step";
 import { CodeStep } from "./code-step";
+import { DetailsStep } from "./details-step";
 import { PhoneStep } from "./phone-step";
 import { AccountReadyStep, LoggedInStep } from "./success-step";
 
 type Step =
   | { name: "phone" }
   | { name: "code" }
-  | { name: "business" }
+  | { name: "details"; initialType: AccountType }
   | { name: "loggedIn" }
-  | { name: "ready"; details: BusinessDetails };
+  | { name: "ready"; details: SignupDetails };
+
+/** `/signup?as=creator` (or agency) preselects the account type; default is business. */
+function typeFromUrl(): AccountType {
+  const as = new URLSearchParams(window.location.search).get("as");
+  return isAccountType(as) ? as : "business";
+}
 
 /** Next step slides in from the right; going back reverses it (24px, 220ms). */
 const slide = {
@@ -31,7 +37,7 @@ const slide = {
 
 /**
  * Phone-first auth shared by /login and /signup:
- * number → code → (existing account: logged in) | (new number: business → ready).
+ * number → code → (existing account: logged in) | (new number: account type + details → ready).
  * Login and sign-up differ only in the first screen's copy.
  */
 export function AuthFlow({ mode }: { mode: AuthVariant }) {
@@ -80,7 +86,7 @@ export function AuthFlow({ mode }: { mode: AuthVariant }) {
       </header>
 
       <main className="flex flex-1 flex-col px-5 pt-4 pb-6 sm:px-6 lg:justify-center lg:pt-0">
-        <div className="mx-auto w-full max-w-[420px] animate-fade-up">
+        <div className="mx-auto w-full max-w-105 animate-fade-up">
           <AnimatePresence mode="wait" custom={direction} initial={false}>
             <m.div
               key={step.name}
@@ -104,10 +110,19 @@ export function AuthFlow({ mode }: { mode: AuthVariant }) {
                 <CodeStep
                   phone={phone}
                   onChangeNumber={() => go({ name: "phone" }, -1)}
-                  onVerified={({ isNewUser }) => go({ name: isNewUser ? "business" : "loggedIn" })}
+                  onVerified={({ isNewUser }) =>
+                    go(
+                      isNewUser
+                        ? { name: "details", initialType: typeFromUrl() }
+                        : { name: "loggedIn" },
+                    )
+                  }
                 />
-              ) : step.name === "business" ? (
-                <BusinessStep onCreated={(details) => go({ name: "ready", details })} />
+              ) : step.name === "details" ? (
+                <DetailsStep
+                  initialType={step.initialType}
+                  onCreated={(details) => go({ name: "ready", details })}
+                />
               ) : step.name === "loggedIn" ? (
                 <LoggedInStep />
               ) : (
