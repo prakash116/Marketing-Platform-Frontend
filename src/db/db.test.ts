@@ -5,6 +5,7 @@ import { getIcon } from "@/components/icons/icon-registry";
 import { audiencesRecord } from "./audiences";
 import { featuresRecord } from "./features";
 import { heroSlidesRecord } from "./hero-slides";
+import { howItWorksRecord } from "./how-it-works";
 import { servicesRecord } from "./services";
 import { siteHeaderRecord } from "./site-header";
 import { trustRecord } from "./trust";
@@ -187,5 +188,18 @@ describe("services record", () => {
   it("has at least one step and an absolute CTA link", () => {
     expect(servicesRecord.steps.length).toBeGreaterThan(0);
     expect(servicesRecord.primaryCta.href.startsWith("/")).toBe(true);
+  });
+});
+
+describe("how it works record", () => {
+  it("has 3 steps with known icons, so the 3-column timeline is full", () => {
+    expect(howItWorksRecord.steps).toHaveLength(3);
+    for (const step of howItWorksRecord.steps) {
+      expect(getIcon(step.icon), step.icon).toBeDefined();
+    }
+  });
+
+  it("sends the button to signup", () => {
+    expect(howItWorksRecord.cta.href).toBe("/signup");
   });
 });

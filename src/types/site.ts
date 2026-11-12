@@ -155,6 +155,26 @@ export interface FeatureSection {
   outro: { title: string; description: string; primary: SiteCta; secondary?: SiteCta };
 }
 
+/** One step of getting started with the app yourself. */
+export interface HowItWorksStep {
+  icon: string;
+  title: string;
+  description: string;
+  /** Short chip, e.g. "60 seconds". */
+  badge?: string;
+}
+
+/** `GET /site/how-it-works` */
+export interface HowItWorksSection {
+  eyebrow: string;
+  title: string;
+  description: string;
+  steps: HowItWorksStep[];
+  cta: SiteCta;
+  /** Reassurance under the button, e.g. "No card needed · Cancel anytime". */
+  note?: string;
+}
+
 /** A done-for-you service delivered by the team (not a self-serve feature). */
 export interface ServiceItem {
   id: string;
