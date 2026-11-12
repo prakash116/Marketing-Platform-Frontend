@@ -229,7 +229,7 @@ export function HeroCarousel({ slides, interval = AUTOPLAY_MS }: HeroCarouselPro
                   : "pointer-events-none translate-x-4 opacity-0",
               )}
             >
-              <SlideBody slide={slide} active={selected} />
+              <SlideBody slide={slide} active={selected} first={index === 0} />
             </div>
           );
         })}
@@ -277,9 +277,18 @@ export function HeroCarousel({ slides, interval = AUTOPLAY_MS }: HeroCarouselPro
   );
 }
 
-function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
+function SlideBody({
+  slide,
+  active,
+  first,
+}: {
+  slide: HeroSlide;
+  active: boolean;
+  first: boolean;
+}) {
+  const credit = slide.image?.credit;
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,500px)] xl:gap-16">
+    <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,500px)] lg:gap-10 xl:gap-16">
       <div className="max-w-xl">
         <span className="inline-flex items-center rounded-full bg-primary-soft px-3 py-1 text-[12px] leading-5 font-semibold text-primary-soft-foreground">
           {slide.eyebrow}
@@ -329,7 +338,29 @@ function SlideBody({ slide, active }: { slide: HeroSlide; active: boolean }) {
         </div>
       </div>
 
-      <HeroVisual visual={slide.visual} active={active} className="hidden lg:block" />
+      <div>
+        <HeroVisual
+          visual={slide.visual}
+          image={slide.image}
+          active={active}
+          // Only the first slide's photo is the LCP image; the rest load lazily.
+          preload={first}
+        />
+        {credit ? (
+          <p className="mt-2 text-right text-[11px] leading-4 text-muted-foreground">
+            Photo:{" "}
+            <a
+              href={credit.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline-offset-2 hover:underline"
+            >
+              {credit.name}
+            </a>
+            {credit.license ? ` · ${credit.license}` : null}
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }

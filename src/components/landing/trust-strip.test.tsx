@@ -11,12 +11,14 @@ describe("TrustStrip", () => {
   });
 
   it("exposes the customer list once, hiding the looping copy", () => {
-    render(<TrustStrip trust={trustRecord} />);
+    const { container } = render(<TrustStrip trust={trustRecord} />);
 
     const list = screen.getByRole("list", { name: "Some of our customers" });
     expect(within(list).getAllByRole("listitem")).toHaveLength(trustRecord.customers.length);
     expect(screen.getAllByRole("list", { name: "Some of our customers" })).toHaveLength(1);
-    expect(screen.getAllByText("Sharma Sweets")).toHaveLength(2);
+    const lists = container.querySelectorAll("ul");
+    expect(lists).toHaveLength(2);
+    expect(lists[1]).toHaveAttribute("aria-hidden", "true");
   });
 
   it("shows initials for each customer", () => {
@@ -32,5 +34,20 @@ describe("TrustStrip", () => {
       const value = screen.getByText(stat.value);
       expect(value.closest("dd")?.previousElementSibling).toHaveTextContent(stat.label);
     }
+  });
+
+  it("shows the customer story with its result", () => {
+    render(<TrustStrip trust={trustRecord} />);
+
+    const story = screen.getByRole("figure");
+    expect(within(story).getByText(/Got 3× more orders/)).toBeInTheDocument();
+    expect(within(story).getByText("3× orders in 2 months")).toBeInTheDocument();
+  });
+
+  it("spreads the stats over 4 columns when there is no story", () => {
+    const { container } = render(<TrustStrip trust={{ ...trustRecord, testimonial: undefined }} />);
+
+    expect(screen.queryByRole("figure")).not.toBeInTheDocument();
+    expect(container.querySelector("dl")).toHaveClass("lg:grid-cols-4");
   });
 });

@@ -72,6 +72,22 @@ export interface HeroVisual {
   cards: HeroActivityCard[];
 }
 
+export interface SiteImage {
+  /**
+   * Today a path under /public, e.g. "/images/landing/business.jpg". When the
+   * API serves images from a CDN, add that host to `images.remotePatterns` in
+   * next.config.ts.
+   */
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** Focal point kept in view when the photo is cropped (CSS object-position), e.g. "40% 30%". */
+  position?: string;
+  /** Photographer credit; required for CC BY / CC BY-SA photos. */
+  credit?: { name: string; url: string; license?: string };
+}
+
 /** A customer shown in the trust strip. Logos come later; for now a wordmark. */
 export interface TrustCustomer {
   name: string;
@@ -86,11 +102,22 @@ export interface TrustStat {
   label: string;
 }
 
+export interface TrustTestimonial {
+  quote: string;
+  name: string;
+  /** e.g. "Restaurant · Delhi" */
+  role: string;
+  /** Headline result shown as a badge, e.g. "3× orders in 2 months". */
+  result?: string;
+  image?: SiteImage;
+}
+
 /** `GET /site/trust` */
 export interface TrustData {
   title: string;
   customers: TrustCustomer[];
   stats: TrustStat[];
+  testimonial?: TrustTestimonial;
 }
 
 export interface HeroSlide {
@@ -107,5 +134,7 @@ export interface HeroSlide {
   points: string[];
   primaryCta: SiteCta;
   secondaryCta?: SiteCta;
+  /** Photo behind the product cards. Without it the slide shows the brand gradient. */
+  image?: SiteImage;
   visual: HeroVisual;
 }

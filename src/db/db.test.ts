@@ -1,8 +1,11 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getIcon } from "@/components/icons/icon-registry";
 import { heroSlidesRecord } from "./hero-slides";
 import { siteHeaderRecord } from "./site-header";
 import { trustRecord } from "./trust";
+import type { SiteImage } from "@/types/site";
 
 /*
  * Guards for the mock records. When the real API replaces them, keep these
@@ -80,5 +83,28 @@ describe("trust record", () => {
 
   it("has 4 stats so the grid fills 2 or 4 columns evenly", () => {
     expect(trustRecord.stats).toHaveLength(4);
+  });
+});
+
+describe("images", () => {
+  const images: SiteImage[] = [
+    ...heroSlidesRecord.flatMap((slide) => (slide.image ? [slide.image] : [])),
+    ...(trustRecord.testimonial?.image ? [trustRecord.testimonial.image] : []),
+  ];
+
+  it("points every local image at a file in /public", () => {
+    for (const image of images) {
+      if (!image.src.startsWith("/")) continue;
+      expect(existsSync(join(process.cwd(), "public", image.src)), image.src).toBe(true);
+    }
+  });
+
+  it("gives every image alt text, a size and a credit with a licence", () => {
+    for (const image of images) {
+      expect(image.alt.trim(), image.src).not.toBe("");
+      expect(image.width).toBeGreaterThan(0);
+      expect(image.height).toBeGreaterThan(0);
+      expect(image.credit?.license, image.src).toBeTruthy();
+    }
   });
 });
