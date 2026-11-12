@@ -54,9 +54,9 @@ export default async function HomePage() {
         />
 
         <div className="mx-auto max-w-320">
+          {/* The page's one h1 is the brand tagline (also the <title>); each slide has its own h2. */}
           <h1 id="hero-title" className="sr-only">
-            {BRAND_NAME}: marketing, creators and tech services for businesses, creators and
-            agencies
+            All your marketing in one app
           </h1>
           <HeroCarousel slides={slides} />
         </div>
