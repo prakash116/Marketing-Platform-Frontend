@@ -297,6 +297,8 @@
   --animate-check-draw: check-draw 400ms var(--ease-out-soft) 150ms both;
   --animate-confetti: confetti 600ms var(--ease-out-soft) both;
   --animate-grow-x: grow-x 1.2s linear both;
+  /* Logo strip: the track holds the list twice and slides by one copy. */
+  --animate-marquee: marquee 40s linear infinite;
 
   @keyframes fade-up {
     from {
@@ -340,6 +342,15 @@
     to {
       opacity: 1;
       transform: translate(var(--x), var(--y)) scale(1);
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
     }
   }
 

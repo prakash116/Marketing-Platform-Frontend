@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getIcon } from "@/components/icons/icon-registry";
 import { heroSlidesRecord } from "./hero-slides";
 import { siteHeaderRecord } from "./site-header";
+import { trustRecord } from "./trust";
 
 /*
  * Guards for the mock records. When the real API replaces them, keep these
@@ -64,5 +65,20 @@ describe("hero slides record", () => {
       for (const bar of slide.visual.bars) expect(bar).toBeGreaterThanOrEqual(0);
       for (const card of slide.visual.cards) expect(getIcon(card.icon), card.icon).toBeDefined();
     }
+  });
+});
+
+describe("trust record", () => {
+  it("has unique customers with a type and a city", () => {
+    const names = trustRecord.customers.map((customer) => customer.name);
+    expect(new Set(names).size).toBe(names.length);
+    for (const customer of trustRecord.customers) {
+      expect(customer.type.trim()).not.toBe("");
+      expect(customer.city.trim()).not.toBe("");
+    }
+  });
+
+  it("has 4 stats so the grid fills 2 or 4 columns evenly", () => {
+    expect(trustRecord.stats).toHaveLength(4);
   });
 });

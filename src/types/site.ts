@@ -72,6 +72,27 @@ export interface HeroVisual {
   cards: HeroActivityCard[];
 }
 
+/** A customer shown in the trust strip. Logos come later; for now a wordmark. */
+export interface TrustCustomer {
+  name: string;
+  /** Industry or role, e.g. "Restaurant" or "Agency". */
+  type: string;
+  city: string;
+}
+
+export interface TrustStat {
+  /** Display value, already formatted: "2,000+", "3×", "60 sec". */
+  value: string;
+  label: string;
+}
+
+/** `GET /site/trust` */
+export interface TrustData {
+  title: string;
+  customers: TrustCustomer[];
+  stats: TrustStat[];
+}
+
 export interface HeroSlide {
   id: string;
   /** Short label on the audience tab, e.g. "Creators". */

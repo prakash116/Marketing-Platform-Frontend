@@ -3,10 +3,11 @@ import Link from "next/link";
 import { DynamicIcon } from "@/components/icons/dynamic-icon";
 import { getIcon } from "@/components/icons/icon-registry";
 import { HeroCarousel } from "@/components/landing/hero-carousel";
+import { TrustStrip } from "@/components/landing/trust-strip";
 import { asRoute } from "@/components/site-header/nav-config";
 import { Heading } from "@/components/ui/typography";
 import { BRAND_NAME } from "@/config/brand";
-import { getHeroSlides, getSiteHeader } from "@/lib/api/site";
+import { getHeroSlides, getSiteHeader, getTrust } from "@/lib/api/site";
 import type { SiteNavMenu } from "@/types/site";
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [slides, header] = await Promise.all([getHeroSlides(), getSiteHeader()]);
+  const [slides, header, trust] = await Promise.all([getHeroSlides(), getSiteHeader(), getTrust()]);
   const features =
     header.nav.find((item): item is SiteNavMenu => item.kind === "menu" && item.id === "features")
       ?.items ?? [];
@@ -46,6 +47,8 @@ export default async function HomePage() {
           <HeroCarousel slides={slides} />
         </div>
       </section>
+
+      <TrustStrip trust={trust} />
 
       <section aria-labelledby="everything" className="px-4 pt-10 pb-24">
         <div className="mx-auto max-w-320">
