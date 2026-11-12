@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getIcon } from "@/components/icons/icon-registry";
 import { audiencesRecord } from "./audiences";
+import { featuresRecord } from "./features";
 import { heroSlidesRecord } from "./hero-slides";
 import { siteHeaderRecord } from "./site-header";
 import { trustRecord } from "./trust";
@@ -126,5 +127,40 @@ describe("audiences record", () => {
     expect(audiencesRecord.paths.map((path) => path.id)).toEqual(
       heroSlidesRecord.map((slide) => slide.id),
     );
+  });
+});
+
+describe("features record", () => {
+  it("uses known icons and unique links", () => {
+    const hrefs = featuresRecord.items.map((item) => item.href);
+    expect(new Set(hrefs).size).toBe(hrefs.length);
+    for (const item of featuresRecord.items) {
+      expect(getIcon(item.icon), item.icon).toBeDefined();
+      expect(item.highlights.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("gives every wide card a preview", () => {
+    for (const item of featuresRecord.items.filter((entry) => entry.size === "wide")) {
+      expect(item.preview, item.id).toBeDefined();
+    }
+  });
+
+  it("fills the grid with no gaps at 2 and 3 columns", () => {
+    // Outro takes 1 cell at 3 columns and the full row (2) at 2 columns.
+    const cells = featuresRecord.items.reduce(
+      (sum, item) => sum + (item.size === "wide" ? 2 : 1),
+      0,
+    );
+    expect((cells + 1) % 3).toBe(0);
+    expect((cells + 2) % 2).toBe(0);
+  });
+
+  it("links to the same feature pages as the header menu", () => {
+    const menu = siteHeaderRecord.nav.find(
+      (item) => item.kind === "menu" && item.id === "features",
+    );
+    const menuHrefs = menu?.kind === "menu" ? menu.items.map((item) => item.href) : [];
+    expect(featuresRecord.items.map((item) => item.href)).toEqual(menuHrefs);
   });
 });

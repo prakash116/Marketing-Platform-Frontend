@@ -120,6 +120,41 @@ export interface TrustData {
   testimonial?: TrustTestimonial;
 }
 
+/** Decorative product preview inside a wide feature card. */
+export type FeaturePreview =
+  | {
+      kind: "chat";
+      messages: { from: "customer" | "business"; text: string; time: string }[];
+    }
+  | {
+      kind: "stats";
+      stats: { label: string; value: string; change?: string }[];
+    };
+
+export interface FeatureItem {
+  id: string;
+  icon: string;
+  tone: HeroTone;
+  title: string;
+  description: string;
+  /** 2–3 short tags shown as chips. */
+  highlights: string[];
+  href: string;
+  /** "wide" spans two columns from 640px and shows the preview. */
+  size: "wide" | "normal";
+  preview?: FeaturePreview;
+}
+
+/** `GET /site/features` */
+export interface FeatureSection {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: FeatureItem[];
+  /** Closing card that fills the grid's last slot. */
+  outro: { title: string; description: string; primary: SiteCta; secondary?: SiteCta };
+}
+
 /** One entry point in the "who are you?" section. */
 export interface AudiencePath {
   id: string;

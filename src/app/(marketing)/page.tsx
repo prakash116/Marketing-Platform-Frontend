@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { DynamicIcon } from "@/components/icons/dynamic-icon";
-import { getIcon } from "@/components/icons/icon-registry";
 import { AudiencePaths } from "@/components/landing/audience-paths";
+import { FeaturesSection } from "@/components/landing/features-section";
 import { HeroCarousel } from "@/components/landing/hero-carousel";
 import { TrustStrip } from "@/components/landing/trust-strip";
-import { asRoute } from "@/components/site-header/nav-config";
-import { Heading } from "@/components/ui/typography";
 import { BRAND_NAME } from "@/config/brand";
-import { getAudiences, getHeroSlides, getSiteHeader, getTrust } from "@/lib/api/site";
-import type { SiteNavMenu } from "@/types/site";
+import { getAudiences, getFeatures, getHeroSlides, getTrust } from "@/lib/api/site";
 
 export const metadata: Metadata = {
   title: { absolute: `${BRAND_NAME} · All your marketing in one app` },
@@ -18,15 +13,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [slides, header, trust, audiences] = await Promise.all([
+  const [slides, trust, audiences, features] = await Promise.all([
     getHeroSlides(),
-    getSiteHeader(),
     getTrust(),
     getAudiences(),
+    getFeatures(),
   ]);
-  const features =
-    header.nav.find((item): item is SiteNavMenu => item.kind === "menu" && item.id === "features")
-      ?.items ?? [];
 
   return (
     // The site header is sticky and transparent here; pull the hero up underneath it.
@@ -58,38 +50,7 @@ export default async function HomePage() {
 
       <AudiencePaths section={audiences} />
 
-      <section aria-labelledby="everything" className="px-4 pt-16 pb-24 lg:pt-20">
-        <div className="mx-auto max-w-320">
-          <Heading level="h3" as="h2" id="everything" className="text-center">
-            Everything in one place
-          </Heading>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map(({ href, title, description, icon }) => {
-              return (
-                <li key={href}>
-                  <Link
-                    href={asRoute(href)}
-                    prefetch={false}
-                    className="flex h-full items-start gap-4 rounded-xl border border-border bg-card p-5 shadow-sm transition-colors hover:bg-muted"
-                  >
-                    {getIcon(icon) ? (
-                      <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-soft-foreground">
-                        <DynamicIcon name={icon} className="size-5" aria-hidden="true" />
-                      </span>
-                    ) : null}
-                    <span>
-                      <span className="block text-[15px] leading-5 font-semibold">{title}</span>
-                      <span className="mt-1 block text-[13px] leading-5 text-muted-foreground">
-                        {description}
-                      </span>
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
+      <FeaturesSection section={features} />
     </main>
   );
 }
