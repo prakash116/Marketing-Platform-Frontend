@@ -3,6 +3,7 @@ import { audiencesRecord } from "@/db/audiences";
 import { featuresRecord } from "@/db/features";
 import { heroSlidesRecord } from "@/db/hero-slides";
 import { howItWorksRecord } from "@/db/how-it-works";
+import { marketplaceRecord } from "@/db/marketplace";
 import { servicesRecord } from "@/db/services";
 import { siteHeaderRecord } from "@/db/site-header";
 import { trustRecord } from "@/db/trust";
@@ -11,6 +12,7 @@ import type {
   FeatureSection,
   HeroSlide,
   HowItWorksSection,
+  MarketplaceSection,
   ServiceSection,
   SiteHeaderData,
   TrustData,
@@ -64,6 +66,14 @@ export async function getHowItWorks(): Promise<HowItWorksSection> {
   cacheTag("site-how-it-works");
   // TODO: return api<HowItWorksSection>("/site/how-it-works") once the endpoint exists.
   return howItWorksRecord;
+}
+
+export async function getMarketplace(): Promise<MarketplaceSection> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("site-marketplace");
+  // TODO: return api<MarketplaceSection>("/site/marketplace") once the endpoint exists.
+  return marketplaceRecord;
 }
 
 export async function getServices(): Promise<ServiceSection> {

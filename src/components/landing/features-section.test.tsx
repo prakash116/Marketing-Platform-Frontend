@@ -7,7 +7,9 @@ describe("FeaturesSection", () => {
   it("names the section with its heading", () => {
     render(<FeaturesSection section={featuresRecord} />);
 
-    expect(screen.getByRole("region", { name: featuresRecord.title })).toBeInTheDocument();
+    // Cheaper than getByRole("region"), which computes every accessible name in the tree.
+    const heading = screen.getByText(featuresRecord.title, { selector: "h2" });
+    expect(heading.closest("section")).toHaveAttribute("aria-labelledby", heading.id);
   });
 
   it("renders one card per feature with a single 'learn more' link", () => {

@@ -155,6 +155,48 @@ export interface FeatureSection {
   outro: { title: string; description: string; primary: SiteCta; secondary?: SiteCta };
 }
 
+export interface MarketplaceCreator {
+  id: string;
+  name: string;
+  /** e.g. "Food", "Fitness" */
+  niche: string;
+  city: string;
+  /** Already formatted: "24.5k" */
+  followers: string;
+  /** Already formatted: "4.8%" */
+  engagement: string;
+  /** Already formatted: "₹2,000" */
+  startingPrice: string;
+  platforms: string[];
+  verified: boolean;
+  tone: HeroTone;
+}
+
+export interface MarketplaceBrief {
+  id: string;
+  brand: string;
+  title: string;
+  city: string;
+  /** Already formatted: "₹2,500" */
+  budget: string;
+  /** e.g. "Reel", "Story" */
+  format: string;
+  /** e.g. "Closes in 5 days" */
+  closes: string;
+  applicants: number;
+}
+
+/** `GET /site/marketplace` */
+export interface MarketplaceSection {
+  eyebrow: string;
+  title: string;
+  description: string;
+  creators: MarketplaceCreator[];
+  briefs: MarketplaceBrief[];
+  creatorsCta: SiteCta;
+  briefsCta: SiteCta;
+}
+
 /** One step of getting started with the app yourself. */
 export interface HowItWorksStep {
   icon: string;

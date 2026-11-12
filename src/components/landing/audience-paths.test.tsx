@@ -7,7 +7,9 @@ describe("AudiencePaths", () => {
   it("names the section with its heading", () => {
     render(<AudiencePaths section={audiencesRecord} />);
 
-    expect(screen.getByRole("region", { name: "Pick your path" })).toBeInTheDocument();
+    // Cheaper than getByRole("region"), which computes every accessible name in the tree.
+    const heading = screen.getByText("Pick your path", { selector: "h2" });
+    expect(heading.closest("section")).toHaveAttribute("aria-labelledby", heading.id);
   });
 
   it("renders one card per audience, each with a heading", () => {

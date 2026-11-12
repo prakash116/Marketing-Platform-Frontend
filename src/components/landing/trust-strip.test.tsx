@@ -7,7 +7,9 @@ describe("TrustStrip", () => {
   it("names the section with its title", () => {
     render(<TrustStrip trust={trustRecord} />);
 
-    expect(screen.getByRole("region", { name: trustRecord.title })).toBeInTheDocument();
+    // Cheaper than getByRole("region"), which computes every accessible name in the tree.
+    const heading = screen.getByText(trustRecord.title, { selector: "h2" });
+    expect(heading.closest("section")).toHaveAttribute("aria-labelledby", heading.id);
   });
 
   it("exposes the customer list once, hiding the looping copy", () => {

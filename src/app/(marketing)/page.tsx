@@ -3,6 +3,7 @@ import { AudiencePaths } from "@/components/landing/audience-paths";
 import { FeaturesSection } from "@/components/landing/features-section";
 import { HeroCarousel } from "@/components/landing/hero-carousel";
 import { HowItWorks } from "@/components/landing/how-it-works";
+import { MarketplacePreview } from "@/components/landing/marketplace-preview";
 import { ServicesSection } from "@/components/landing/services-section";
 import { TrustStrip } from "@/components/landing/trust-strip";
 import { BRAND_NAME } from "@/config/brand";
@@ -11,6 +12,7 @@ import {
   getFeatures,
   getHeroSlides,
   getHowItWorks,
+  getMarketplace,
   getServices,
   getTrust,
 } from "@/lib/api/site";
@@ -22,14 +24,17 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [slides, trust, audiences, features, services, howItWorks] = await Promise.all([
-    getHeroSlides(),
-    getTrust(),
-    getAudiences(),
-    getFeatures(),
-    getServices(),
-    getHowItWorks(),
-  ]);
+  const [slides, trust, audiences, features, services, howItWorks, marketplace] = await Promise.all(
+    [
+      getHeroSlides(),
+      getTrust(),
+      getAudiences(),
+      getFeatures(),
+      getServices(),
+      getHowItWorks(),
+      getMarketplace(),
+    ],
+  );
 
   return (
     // The site header is sticky and transparent here; pull the hero up underneath it.
@@ -66,6 +71,8 @@ export default async function HomePage() {
       <ServicesSection section={services} />
 
       <HowItWorks section={howItWorks} />
+
+      <MarketplacePreview section={marketplace} />
     </main>
   );
 }

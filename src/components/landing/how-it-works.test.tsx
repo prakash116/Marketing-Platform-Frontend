@@ -7,7 +7,9 @@ describe("HowItWorks", () => {
   it("names the section with its heading", () => {
     render(<HowItWorks section={howItWorksRecord} />);
 
-    expect(screen.getByRole("region", { name: howItWorksRecord.title })).toBeInTheDocument();
+    // Cheaper than getByRole("region"), which computes every accessible name in the tree.
+    const heading = screen.getByText(howItWorksRecord.title, { selector: "h2" });
+    expect(heading.closest("section")).toHaveAttribute("aria-labelledby", heading.id);
   });
 
   it("lists the steps in order with their badges", () => {

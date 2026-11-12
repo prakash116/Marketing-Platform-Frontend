@@ -6,6 +6,7 @@ import { audiencesRecord } from "./audiences";
 import { featuresRecord } from "./features";
 import { heroSlidesRecord } from "./hero-slides";
 import { howItWorksRecord } from "./how-it-works";
+import { marketplaceRecord } from "./marketplace";
 import { servicesRecord } from "./services";
 import { siteHeaderRecord } from "./site-header";
 import { trustRecord } from "./trust";
@@ -201,5 +202,24 @@ describe("how it works record", () => {
 
   it("sends the button to signup", () => {
     expect(howItWorksRecord.cta.href).toBe("/signup");
+  });
+});
+
+describe("marketplace record", () => {
+  it("has unique creators and briefs", () => {
+    const creatorIds = marketplaceRecord.creators.map((creator) => creator.id);
+    const briefIds = marketplaceRecord.briefs.map((brief) => brief.id);
+    expect(new Set(creatorIds).size).toBe(creatorIds.length);
+    expect(new Set(briefIds).size).toBe(briefIds.length);
+  });
+
+  it("has an even number of creators so the 2-column grid is full", () => {
+    expect(marketplaceRecord.creators.length % 2).toBe(0);
+  });
+
+  it("gives every creator at least one platform and every brief a budget", () => {
+    for (const creator of marketplaceRecord.creators)
+      expect(creator.platforms.length).toBeGreaterThan(0);
+    for (const brief of marketplaceRecord.briefs) expect(brief.budget).toMatch(/^₹/);
   });
 });

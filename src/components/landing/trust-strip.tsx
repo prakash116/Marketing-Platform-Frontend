@@ -1,7 +1,7 @@
 import { Quote, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { Kpi, Text, textVariants } from "@/components/ui/typography";
-import { cn } from "@/lib/utils";
+import { cn, initials } from "@/lib/utils";
 import type { TrustCustomer, TrustData, TrustTestimonial } from "@/types/site";
 
 /** Avatar colours, cycled through the list so neighbours never match. */
@@ -11,14 +11,6 @@ const avatarTones = [
   "bg-accent-soft text-accent-soft-foreground",
   "bg-info-soft text-info-soft-foreground",
 ];
-
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((word) => word.charAt(0).toUpperCase())
-    .join("");
-}
 
 /**
  * Social proof under the hero: a slow customer strip, four key numbers and,
