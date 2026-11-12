@@ -3,20 +3,23 @@ import Link from "next/link";
 import { NavigationMenu } from "radix-ui";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { isActivePath, type NavCta, type NavLinkItem, type NavMenu } from "./nav-config";
+import { DynamicIcon } from "@/components/icons/dynamic-icon";
+import { getIcon } from "@/components/icons/icon-registry";
+import type { SiteCta, SiteLink, SiteNavMenu } from "@/types/site";
+import { asRoute, isActivePath } from "./nav-config";
 
 export interface MegaMenuProps {
-  menu: NavMenu;
+  menu: SiteNavMenu;
   pathname: string;
   /** Items shown only below 1280px (e.g. About, which is a top-level link from xl). */
-  collapsedItems?: NavLinkItem[];
+  collapsedItems?: SiteLink[];
   /** Extra footer content shown only below 1280px (e.g. the theme toggle). */
   collapsedFooter?: ReactNode;
 }
 
 /** Body of a desktop mega menu panel. Rendered inside NavigationMenu.Content. */
 export function MegaMenu({ menu, pathname, collapsedItems = [], collapsedFooter }: MegaMenuProps) {
-  const { icon: PromoIcon, ...promo } = menu.promo;
+  const { icon: promoIcon, ...promo } = menu.promo;
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_320px] gap-4 p-4 xl:grid-cols-[minmax(0,1fr)_400px]">
@@ -56,7 +59,7 @@ export function MegaMenu({ menu, pathname, collapsedItems = [], collapsedFooter 
           className="flex aspect-16/8 items-center justify-center rounded-lg bg-primary"
         >
           <span className="flex size-14 items-center justify-center rounded-full bg-card text-primary shadow-md">
-            <PromoIcon className="size-6" strokeWidth={2} />
+            <DynamicIcon name={promoIcon} className="size-6" strokeWidth={2} />
           </span>
         </div>
         <p className="mt-5 font-display text-[16px] leading-6 font-bold text-foreground">
@@ -69,11 +72,11 @@ export function MegaMenu({ menu, pathname, collapsedItems = [], collapsedFooter 
   );
 }
 
-function ArrowLink({ cta, className }: { cta: NavCta; className?: string }) {
+function ArrowLink({ cta, className }: { cta: SiteCta; className?: string }) {
   return (
     <NavigationMenu.Link asChild>
       <Link
-        href={cta.href}
+        href={asRoute(cta.href)}
         prefetch={false}
         className={cn(
           "inline-flex w-fit shrink-0 items-center gap-1 rounded-sm text-[13px] leading-5 font-semibold text-primary hover:underline",
@@ -86,18 +89,18 @@ function ArrowLink({ cta, className }: { cta: NavCta; className?: string }) {
   );
 }
 
-function MegaMenuLink({ item, pathname }: { item: NavLinkItem; pathname: string }) {
-  const Icon = item.icon;
+function MegaMenuLink({ item, pathname }: { item: SiteLink; pathname: string }) {
+  const hasIcon = getIcon(item.icon) !== undefined;
   return (
     <NavigationMenu.Link asChild active={isActivePath(pathname, item.href)}>
       <Link
-        href={item.href}
+        href={asRoute(item.href)}
         prefetch={false}
         className="flex items-start gap-4 rounded-lg p-3.5 transition-colors duration-150 outline-none hover:bg-muted focus-visible:bg-muted data-active:bg-muted"
       >
-        {Icon ? (
+        {hasIcon ? (
           <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-primary-soft text-primary-soft-foreground">
-            <Icon className="size-5" aria-hidden="true" />
+            <DynamicIcon name={item.icon} className="size-5" aria-hidden="true" />
           </span>
         ) : null}
         <span className="min-w-0 pt-0.5">

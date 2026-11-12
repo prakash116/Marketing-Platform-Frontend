@@ -6,6 +6,16 @@ export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
 
+/** Up to two capital initials from a name: "Sharma Sweets" → "SS". */
+export function initials(name: string): string {
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
+}
+
 const inrWhole = new Intl.NumberFormat("en-IN", {
   style: "currency",
   currency: "INR",

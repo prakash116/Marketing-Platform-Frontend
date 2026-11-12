@@ -75,6 +75,10 @@
   --sidebar-border: #e2e8f0;
   --sidebar-ring: #4f46e5;
 
+  /* Auth brand panel: indigo-600 → indigo-900 in both themes. */
+  --brand-panel-from: #4f46e5;
+  --brand-panel-to: #312e81;
+
   /* Charts */
   --chart-1: #4f46e5;
   --chart-2: #f97316;
@@ -248,6 +252,9 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --color-brand-panel-from: var(--brand-panel-from);
+  --color-brand-panel-to: var(--brand-panel-to);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -285,6 +292,76 @@
   --animate-pop-in: pop-in 150ms var(--ease-out-soft) both;
   --animate-modal-in: modal-in 200ms var(--ease-out-soft) both;
   --animate-pulse-soft: pulse-soft 1.6s ease-in-out infinite;
+  --animate-fade-up: fade-up 250ms var(--ease-out-soft) both;
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-check-draw: check-draw 400ms var(--ease-out-soft) 150ms both;
+  --animate-confetti: confetti 600ms var(--ease-out-soft) both;
+  --animate-grow-x: grow-x 1.2s linear both;
+  /* Logo strip: the track holds the list twice and slides by one copy. */
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes check-draw {
+    from {
+      stroke-dashoffset: 24;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Each particle sets --x / --y for where it lands. */
+  @keyframes confetti {
+    from {
+      opacity: 0;
+      transform: translate(0, 0) scale(0.4);
+    }
+    30% {
+      opacity: 1;
+    }
+    to {
+      opacity: 1;
+      transform: translate(var(--x), var(--y)) scale(1);
+    }
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes grow-x {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
 
   @keyframes toast-in {
     from {
