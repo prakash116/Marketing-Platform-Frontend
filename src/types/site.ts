@@ -120,6 +120,27 @@ export interface TrustData {
   testimonial?: TrustTestimonial;
 }
 
+/** One entry point in the "who are you?" section. */
+export interface AudiencePath {
+  id: string;
+  icon: string;
+  tone: HeroTone;
+  /** First person, as the visitor would say it: "I run a business". */
+  title: string;
+  description: string;
+  /** Shown from 640px; phones get the short version of the card. */
+  points: string[];
+  cta: SiteCta;
+}
+
+/** `GET /site/audiences` */
+export interface AudienceSection {
+  eyebrow: string;
+  title: string;
+  description: string;
+  paths: AudiencePath[];
+}
+
 export interface HeroSlide {
   id: string;
   /** Short label on the audience tab, e.g. "Creators". */

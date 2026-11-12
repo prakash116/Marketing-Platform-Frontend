@@ -3,19 +3,8 @@ import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { DynamicIcon } from "@/components/icons/dynamic-icon";
 import { cn } from "@/lib/utils";
-import type {
-  HeroActivityCard,
-  HeroTone,
-  HeroVisual as HeroVisualData,
-  SiteImage,
-} from "@/types/site";
-
-const toneClass: Record<HeroTone, string> = {
-  primary: "bg-primary-soft text-primary-soft-foreground",
-  success: "bg-success-soft text-success",
-  accent: "bg-accent-soft text-accent-soft-foreground",
-  info: "bg-info-soft text-info-soft-foreground",
-};
+import { toneClass } from "./tones";
+import type { HeroActivityCard, HeroVisual as HeroVisualData, SiteImage } from "@/types/site";
 
 export interface HeroVisualProps {
   visual: HeroVisualData;

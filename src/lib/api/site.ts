@@ -1,8 +1,9 @@
 import { cacheLife, cacheTag } from "next/cache";
+import { audiencesRecord } from "@/db/audiences";
 import { heroSlidesRecord } from "@/db/hero-slides";
 import { siteHeaderRecord } from "@/db/site-header";
 import { trustRecord } from "@/db/trust";
-import type { HeroSlide, SiteHeaderData, TrustData } from "@/types/site";
+import type { AudienceSection, HeroSlide, SiteHeaderData, TrustData } from "@/types/site";
 
 /**
  * Public-site content. Components call only these functions, so switching to
@@ -10,7 +11,7 @@ import type { HeroSlide, SiteHeaderData, TrustData } from "@/types/site";
  *
  *   return api<SiteHeaderData>("/site/header");
  *
- * Both are cached for an hour (`'use cache'`) and tagged, so an admin edit can
+ * All are cached for an hour (`'use cache'`) and tagged, so an admin edit can
  * refresh them with `revalidateTag("site-header", "max")`.
  */
 
@@ -28,6 +29,14 @@ export async function getHeroSlides(): Promise<HeroSlide[]> {
   cacheTag("hero-slides");
   // TODO: return api<HeroSlide[]>("/site/hero-slides") once the endpoint exists.
   return heroSlidesRecord;
+}
+
+export async function getAudiences(): Promise<AudienceSection> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("site-audiences");
+  // TODO: return api<AudienceSection>("/site/audiences") once the endpoint exists.
+  return audiencesRecord;
 }
 
 export async function getTrust(): Promise<TrustData> {

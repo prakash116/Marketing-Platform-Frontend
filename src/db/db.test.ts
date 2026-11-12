@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getIcon } from "@/components/icons/icon-registry";
+import { audiencesRecord } from "./audiences";
 import { heroSlidesRecord } from "./hero-slides";
 import { siteHeaderRecord } from "./site-header";
 import { trustRecord } from "./trust";
@@ -106,5 +107,24 @@ describe("images", () => {
       expect(image.height).toBeGreaterThan(0);
       expect(image.credit?.license, image.src).toBeTruthy();
     }
+  });
+});
+
+describe("audiences record", () => {
+  it("has 4 unique paths with known icons and absolute CTA links", () => {
+    const ids = audiencesRecord.paths.map((path) => path.id);
+    expect(ids).toHaveLength(4);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const path of audiencesRecord.paths) {
+      expect(getIcon(path.icon), path.icon).toBeDefined();
+      expect(path.cta.href.startsWith("/")).toBe(true);
+      expect(path.points.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("matches the hero slides one to one", () => {
+    expect(audiencesRecord.paths.map((path) => path.id)).toEqual(
+      heroSlidesRecord.map((slide) => slide.id),
+    );
   });
 });

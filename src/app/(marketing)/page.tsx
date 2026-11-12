@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DynamicIcon } from "@/components/icons/dynamic-icon";
 import { getIcon } from "@/components/icons/icon-registry";
+import { AudiencePaths } from "@/components/landing/audience-paths";
 import { HeroCarousel } from "@/components/landing/hero-carousel";
 import { TrustStrip } from "@/components/landing/trust-strip";
 import { asRoute } from "@/components/site-header/nav-config";
 import { Heading } from "@/components/ui/typography";
 import { BRAND_NAME } from "@/config/brand";
-import { getHeroSlides, getSiteHeader, getTrust } from "@/lib/api/site";
+import { getAudiences, getHeroSlides, getSiteHeader, getTrust } from "@/lib/api/site";
 import type { SiteNavMenu } from "@/types/site";
 
 export const metadata: Metadata = {
@@ -17,7 +18,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [slides, header, trust] = await Promise.all([getHeroSlides(), getSiteHeader(), getTrust()]);
+  const [slides, header, trust, audiences] = await Promise.all([
+    getHeroSlides(),
+    getSiteHeader(),
+    getTrust(),
+    getAudiences(),
+  ]);
   const features =
     header.nav.find((item): item is SiteNavMenu => item.kind === "menu" && item.id === "features")
       ?.items ?? [];
@@ -50,7 +56,9 @@ export default async function HomePage() {
 
       <TrustStrip trust={trust} />
 
-      <section aria-labelledby="everything" className="px-4 pt-10 pb-24">
+      <AudiencePaths section={audiences} />
+
+      <section aria-labelledby="everything" className="px-4 pt-16 pb-24 lg:pt-20">
         <div className="mx-auto max-w-320">
           <Heading level="h3" as="h2" id="everything" className="text-center">
             Everything in one place
