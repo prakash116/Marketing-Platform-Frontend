@@ -67,13 +67,6 @@ export const securityHeaders: Header[] = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   {
     key: "Permissions-Policy",
-    value: [
-      "camera=()",
-      "microphone=()",
-      "geolocation=()",
-      "payment=()",
-      "usb=()",
-      "browsing-topics=()",
-    ].join(", "),
+    value: ["camera=()", "microphone=()", "geolocation=()", "payment=()", "usb=()"].join(", "),
   },
 ];

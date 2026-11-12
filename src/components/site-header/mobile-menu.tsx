@@ -10,10 +10,17 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { authLinks, isActivePath, mainNav, whatsappChatUrl, type NavLinkItem } from "./nav-config";
+import { DynamicIcon } from "@/components/icons/dynamic-icon";
+import type { SiteLink, SiteNavItem } from "@/types/site";
+import { asRoute, authLinks, isActivePath } from "./nav-config";
 
 /** Full-screen navigation sheet for viewports below 1024px. */
-export function MobileMenu() {
+export interface MobileMenuProps {
+  nav: SiteNavItem[];
+  whatsappUrl: string;
+}
+
+export function MobileMenu({ nav, whatsappUrl }: MobileMenuProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [lastPathname, setLastPathname] = useState(pathname);
@@ -53,11 +60,11 @@ export function MobileMenu() {
 
         <nav aria-label="Main" className="flex-1 overflow-y-auto overscroll-contain px-4 py-2">
           <Accordion.Root type="multiple" className="flex flex-col">
-            {mainNav.map((item) =>
+            {nav.map((item) =>
               item.kind === "link" ? (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={asRoute(item.href)}
                   prefetch={item.prefetch ? undefined : false}
                   aria-current={isActivePath(pathname, item.href) ? "page" : undefined}
                   className="flex min-h-12 items-center border-b border-border text-[15px] font-semibold text-foreground last:border-b-0"
@@ -95,7 +102,7 @@ export function MobileMenu() {
           <div className="flex items-center justify-between">
             <ThemeToggle variant="ghost" className="-ml-2 size-11 [&_svg]:size-5" />
             <a
-              href={whatsappChatUrl}
+              href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-11 items-center gap-1.5 rounded-md text-[13px] font-semibold text-success"
@@ -123,16 +130,15 @@ export function MobileMenu() {
   );
 }
 
-function MobileLinkList({ items, pathname }: { items: NavLinkItem[]; pathname: string }) {
+function MobileLinkList({ items, pathname }: { items: SiteLink[]; pathname: string }) {
   return (
     <ul className="flex flex-col rounded-lg bg-muted p-1.5">
       {items.map((link) => {
-        const Icon = link.icon;
         const active = isActivePath(pathname, link.href);
         return (
           <li key={link.href}>
             <Link
-              href={link.href}
+              href={asRoute(link.href)}
               prefetch={false}
               aria-current={active ? "page" : undefined}
               className={cn(
@@ -140,7 +146,11 @@ function MobileLinkList({ items, pathname }: { items: NavLinkItem[]; pathname: s
                 active && "text-foreground",
               )}
             >
-              {Icon ? <Icon className="size-4 text-muted-foreground" aria-hidden="true" /> : null}
+              <DynamicIcon
+                name={link.icon}
+                className="size-4 text-muted-foreground"
+                aria-hidden="true"
+              />
               {link.title}
             </Link>
           </li>

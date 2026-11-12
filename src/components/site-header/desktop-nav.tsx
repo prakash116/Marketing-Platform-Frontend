@@ -8,7 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 import { MegaMenu } from "./mega-menu";
-import { aboutItem, isActivePath, mainNav } from "./nav-config";
+import type { SiteLink, SiteNavItem } from "@/types/site";
+import { asRoute, isActivePath } from "./nav-config";
 
 const itemClass = cn(
   "group relative inline-flex h-10 cursor-pointer items-center gap-1 rounded-md px-3 text-[15px] leading-5 font-medium whitespace-nowrap text-text-secondary outline-none",
@@ -24,7 +25,13 @@ const itemClass = cn(
  * mounted, only the last one is Radix's "top" dismissable layer, so closed
  * panels ignore outside clicks/Esc and Esc is handled here for the open one.
  */
-export function DesktopNav({ className }: { className?: string }) {
+export interface DesktopNavProps {
+  nav: SiteNavItem[];
+  about: SiteLink;
+  className?: string;
+}
+
+export function DesktopNav({ nav, about, className }: DesktopNavProps) {
   const pathname = usePathname();
   const [value, setValue] = useState("");
   const triggers = useRef(new Map<string, HTMLButtonElement>());
@@ -55,14 +62,14 @@ export function DesktopNav({ className }: { className?: string }) {
       className={cn("flex justify-center", className)}
     >
       <NavigationMenu.List className="flex items-center gap-1">
-        {mainNav.map((item) => {
+        {nav.map((item) => {
           if (item.kind === "link") {
-            const isAbout = item.href === aboutItem.href;
+            const isAbout = item.href === about.href;
             return (
               <NavigationMenu.Item key={item.href} className={cn(isAbout && "hidden xl:block")}>
                 <NavigationMenu.Link asChild active={isActivePath(pathname, item.href)}>
                   <Link
-                    href={item.href}
+                    href={asRoute(item.href)}
                     prefetch={item.prefetch ? undefined : false}
                     className={itemClass}
                   >
@@ -74,7 +81,7 @@ export function DesktopNav({ className }: { className?: string }) {
           }
 
           const active = item.items.some((link) => isActivePath(pathname, link.href));
-          const isResources = item.id === "resources";
+          const holdsAbout = item.holdsAbout === true;
           return (
             <NavigationMenu.Item key={item.id} value={item.id}>
               <NavigationMenu.Trigger
@@ -101,9 +108,9 @@ export function DesktopNav({ className }: { className?: string }) {
                   menu={item}
                   pathname={pathname}
                   // 1024–1279px: About and the theme toggle move into Resources.
-                  collapsedItems={isResources ? [aboutItem] : undefined}
+                  collapsedItems={holdsAbout ? [about] : undefined}
                   collapsedFooter={
-                    isResources ? (
+                    holdsAbout ? (
                       <ThemeToggle variant="ghost" className="[&_svg]:size-5" />
                     ) : undefined
                   }
