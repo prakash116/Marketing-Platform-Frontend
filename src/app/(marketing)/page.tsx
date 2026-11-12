@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { AudiencePaths } from "@/components/landing/audience-paths";
 import { FeaturesSection } from "@/components/landing/features-section";
 import { HeroCarousel } from "@/components/landing/hero-carousel";
+import { ServicesSection } from "@/components/landing/services-section";
 import { TrustStrip } from "@/components/landing/trust-strip";
 import { BRAND_NAME } from "@/config/brand";
-import { getAudiences, getFeatures, getHeroSlides, getTrust } from "@/lib/api/site";
+import { getAudiences, getFeatures, getHeroSlides, getServices, getTrust } from "@/lib/api/site";
 
 export const metadata: Metadata = {
   title: { absolute: `${BRAND_NAME} · All your marketing in one app` },
@@ -13,11 +14,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [slides, trust, audiences, features] = await Promise.all([
+  const [slides, trust, audiences, features, services] = await Promise.all([
     getHeroSlides(),
     getTrust(),
     getAudiences(),
     getFeatures(),
+    getServices(),
   ]);
 
   return (
@@ -51,6 +53,8 @@ export default async function HomePage() {
       <AudiencePaths section={audiences} />
 
       <FeaturesSection section={features} />
+
+      <ServicesSection section={services} />
     </main>
   );
 }

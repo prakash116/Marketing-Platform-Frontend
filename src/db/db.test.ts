@@ -5,6 +5,7 @@ import { getIcon } from "@/components/icons/icon-registry";
 import { audiencesRecord } from "./audiences";
 import { featuresRecord } from "./features";
 import { heroSlidesRecord } from "./hero-slides";
+import { servicesRecord } from "./services";
 import { siteHeaderRecord } from "./site-header";
 import { trustRecord } from "./trust";
 import type { SiteImage } from "@/types/site";
@@ -162,5 +163,29 @@ describe("features record", () => {
     );
     const menuHrefs = menu?.kind === "menu" ? menu.items.map((item) => item.href) : [];
     expect(featuresRecord.items.map((item) => item.href)).toEqual(menuHrefs);
+  });
+});
+
+describe("services record", () => {
+  it("has unique services with known icons and deliverables", () => {
+    const ids = servicesRecord.items.map((item) => item.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const item of servicesRecord.items) {
+      expect(getIcon(item.icon), item.icon).toBeDefined();
+      expect(item.deliverables.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("fills the 2-column grid with no gap", () => {
+    const cells = servicesRecord.items.reduce(
+      (sum, item) => sum + (item.size === "wide" ? 2 : 1),
+      0,
+    );
+    expect(cells % 2).toBe(0);
+  });
+
+  it("has at least one step and an absolute CTA link", () => {
+    expect(servicesRecord.steps.length).toBeGreaterThan(0);
+    expect(servicesRecord.primaryCta.href.startsWith("/")).toBe(true);
   });
 });

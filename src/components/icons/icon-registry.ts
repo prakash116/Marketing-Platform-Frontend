@@ -1,6 +1,7 @@
 import {
   BadgeIndianRupee,
   BookOpen,
+  Bot,
   BriefcaseBusiness,
   Camera,
   CalendarDays,
@@ -14,6 +15,7 @@ import {
   Info,
   LayoutTemplate,
   LifeBuoy,
+  Lightbulb,
   MapPin,
   Megaphone,
   MessageCircle,
@@ -38,6 +40,7 @@ import {
 export const icons = {
   "badge-indian-rupee": BadgeIndianRupee,
   "book-open": BookOpen,
+  bot: Bot,
   "briefcase-business": BriefcaseBusiness,
   camera: Camera,
   "calendar-days": CalendarDays,
@@ -51,6 +54,7 @@ export const icons = {
   info: Info,
   "layout-template": LayoutTemplate,
   "life-buoy": LifeBuoy,
+  lightbulb: Lightbulb,
   "map-pin": MapPin,
   megaphone: Megaphone,
   "message-circle": MessageCircle,

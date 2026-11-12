@@ -155,6 +155,31 @@ export interface FeatureSection {
   outro: { title: string; description: string; primary: SiteCta; secondary?: SiteCta };
 }
 
+/** A done-for-you service delivered by the team (not a self-serve feature). */
+export interface ServiceItem {
+  id: string;
+  icon: string;
+  tone: HeroTone;
+  title: string;
+  description: string;
+  /** What the client gets; shown from 640px. */
+  deliverables: string[];
+  /** "wide" spans both columns from 640px. */
+  size: "wide" | "normal";
+}
+
+/** `GET /site/services` */
+export interface ServiceSection {
+  eyebrow: string;
+  title: string;
+  description: string;
+  /** How an engagement runs, in order. */
+  steps: { title: string; description: string }[];
+  items: ServiceItem[];
+  primaryCta: SiteCta;
+  secondaryCta?: SiteCta;
+}
+
 /** One entry point in the "who are you?" section. */
 export interface AudiencePath {
   id: string;

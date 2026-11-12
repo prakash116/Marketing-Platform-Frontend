@@ -2,12 +2,14 @@ import { cacheLife, cacheTag } from "next/cache";
 import { audiencesRecord } from "@/db/audiences";
 import { featuresRecord } from "@/db/features";
 import { heroSlidesRecord } from "@/db/hero-slides";
+import { servicesRecord } from "@/db/services";
 import { siteHeaderRecord } from "@/db/site-header";
 import { trustRecord } from "@/db/trust";
 import type {
   AudienceSection,
   FeatureSection,
   HeroSlide,
+  ServiceSection,
   SiteHeaderData,
   TrustData,
 } from "@/types/site";
@@ -52,6 +54,14 @@ export async function getFeatures(): Promise<FeatureSection> {
   cacheTag("site-features");
   // TODO: return api<FeatureSection>("/site/features") once the endpoint exists.
   return featuresRecord;
+}
+
+export async function getServices(): Promise<ServiceSection> {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("site-services");
+  // TODO: return api<ServiceSection>("/site/services") once the endpoint exists.
+  return servicesRecord;
 }
 
 export async function getTrust(): Promise<TrustData> {
