@@ -1,5 +1,6 @@
 import { Quote, TrendingUp } from "lucide-react";
 import Image from "next/image";
+import { withBasePath } from "@/lib/base-path";
 import { Kpi, Text, textVariants } from "@/components/ui/typography";
 import { cn, initials } from "@/lib/utils";
 import type { TrustCustomer, TrustData, TrustTestimonial } from "@/types/site";
@@ -126,7 +127,7 @@ function TestimonialCard({ testimonial }: { testimonial: TrustTestimonial }) {
       <div className="relative aspect-16/9 bg-linear-to-br from-brand-panel-from to-brand-panel-to sm:aspect-auto sm:min-h-56">
         {image ? (
           <Image
-            src={image.src}
+            src={withBasePath(image.src)}
             alt={image.alt}
             fill
             sizes="(min-width: 640px) 200px, 100vw"

@@ -2,6 +2,7 @@ import { TrendingUp } from "lucide-react";
 import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 import { DynamicIcon } from "@/components/icons/dynamic-icon";
+import { withBasePath } from "@/lib/base-path";
 import { cn } from "@/lib/utils";
 import { toneClass } from "./tones";
 import type { HeroActivityCard, HeroVisual as HeroVisualData, SiteImage } from "@/types/site";
@@ -56,7 +57,7 @@ function PhotoVisual({
       <div className="relative pb-8 lg:py-8 lg:pl-12">
         <div className="relative aspect-16/10 overflow-hidden rounded-2xl bg-muted shadow-lg ring-1 ring-border sm:aspect-2/1 lg:aspect-square lg:rounded-3xl lg:shadow-xl">
           <Image
-            src={image.src}
+            src={withBasePath(image.src)}
             alt={image.alt}
             fill
             sizes="(min-width: 1280px) 460px, (min-width: 1024px) 40vw, 100vw"

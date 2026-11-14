@@ -4,15 +4,19 @@ import type { NextConfig } from "next";
 import "./src/config/env";
 import { securityHeaders } from "./src/config/security-headers";
 
+const isGithubPages = process.env.GITHUB_PAGES === "true";
+
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: isGithubPages ? "export" : "standalone",
+  ...(isGithubPages ? { basePath: "/Marketing-Platform-Frontend", trailingSlash: true } : {}),
   poweredByHeader: false,
   reactStrictMode: true,
   typedRoutes: true,
-  cacheComponents: true,
-  partialPrefetching: true,
+  cacheComponents: !isGithubPages,
+  partialPrefetching: !isGithubPages,
   images: {
     formats: ["image/avif", "image/webp"],
+    unoptimized: isGithubPages,
   },
   turbopack: {
     rules: {
@@ -22,14 +26,18 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: securityHeaders,
-      },
-    ];
-  },
+  ...(!isGithubPages
+    ? {
+        async headers() {
+          return [
+            {
+              source: "/:path*",
+              headers: securityHeaders,
+            },
+          ];
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;
