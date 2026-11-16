@@ -37,7 +37,7 @@ jobs:
           NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL || 'https://prakash116.github.io' }}
           NEXT_PUBLIC_APP_ENV: staging
       - run: touch out/.nojekyll
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: out
       - id: deployment
