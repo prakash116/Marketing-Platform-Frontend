@@ -37,7 +37,10 @@ export interface SiteNavLink {
   kind: "link";
   title: string;
   href: string;
-  /** Prefetch only the conversion paths (Pricing, Signup). */
+  /**
+   * Prefetch only conversion paths (Signup, later Pricing), and only routes that
+   * exist: prefetching a missing page logs a 404 (db.test.ts checks this).
+   */
   prefetch?: boolean;
 }
 

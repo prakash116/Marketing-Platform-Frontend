@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getIcon } from "@/components/icons/icon-registry";
@@ -221,5 +221,34 @@ describe("marketplace record", () => {
     for (const creator of marketplaceRecord.creators)
       expect(creator.platforms.length).toBeGreaterThan(0);
     for (const brief of marketplaceRecord.briefs) expect(brief.budget).toMatch(/^₹/);
+  });
+});
+
+describe("prefetched links", () => {
+  /** Routes that have a page.tsx under src/app, with route groups like (auth) removed. */
+  function existingRoutes(): Set<string> {
+    const routes = new Set<string>();
+    const walk = (dir: string, segments: string[]) => {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        if (entry.isDirectory()) {
+          const isGroup = entry.name.startsWith("(") && entry.name.endsWith(")");
+          walk(join(dir, entry.name), isGroup ? segments : [...segments, entry.name]);
+        } else if (entry.name === "page.tsx") {
+          routes.add(`/${segments.join("/")}`);
+        }
+      }
+    };
+    walk(join(process.cwd(), "src", "app"), []);
+    return routes;
+  }
+
+  it("only prefetch nav links whose page exists", () => {
+    const routes = existingRoutes();
+    expect(routes.has("/signup")).toBe(true);
+    for (const item of siteHeaderRecord.nav) {
+      if (item.kind !== "link" || !item.prefetch) continue;
+      const path = item.href.split("?")[0] ?? item.href;
+      expect(routes.has(path), `${item.title} prefetches missing route ${path}`).toBe(true);
+    }
   });
 });

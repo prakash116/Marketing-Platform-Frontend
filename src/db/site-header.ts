@@ -117,7 +117,9 @@ export const siteHeaderRecord: SiteHeaderData = {
         cta: { title: "Read the story", href: "/case-studies/sharma-sweets" },
       },
     },
-    { kind: "link", title: "Pricing", href: "/pricing", prefetch: true },
+    // TODO: set prefetch: true once /pricing exists. Prefetching a missing page
+    // 404s in the console and fails the e2e "no console errors" check.
+    { kind: "link", title: "Pricing", href: "/pricing" },
     { kind: "link", title: "Creators", href: "/creators" },
     { kind: "link", title: "Briefs", href: "/briefs" },
     {
