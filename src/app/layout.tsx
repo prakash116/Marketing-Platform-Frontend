@@ -1,15 +1,16 @@
 import type { Metadata, Viewport } from "next";
+import { BRAND_NAME } from "@/config/brand";
 import { fontVariables } from "./fonts";
 import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Marketing Platform",
-    template: "%s · Marketing Platform",
+    default: BRAND_NAME,
+    template: `%s · ${BRAND_NAME}`,
   },
   description: "Campaigns, audiences and analytics in one place.",
-  applicationName: "Marketing Platform",
+  applicationName: BRAND_NAME,
   robots: { index: false, follow: false },
 };
 
